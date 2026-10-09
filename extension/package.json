@@ -1,0 +1,34 @@
+{
+  "name": "capture-to-drive-extension",
+  "description": "Chrome and Edge extension that saves captures to one Google Drive inbox folder through your own Apps Script mailbox.",
+  "private": true,
+  "version": "0.1.0",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/techwithtam/capture-to-drive.git"
+  },
+  "homepage": "https://github.com/techwithtam/capture-to-drive",
+  "engines": {
+    "node": "^22.12.0 || ^24.0.0 || >=26.0.0"
+  },
+  "type": "module",
+  "scripts": {
+    "dev": "wxt",
+    "build": "wxt build",
+    "zip": "wxt zip",
+    "compile": "tsc --noEmit && tsc --noEmit -p ../mailbox",
+    "test": "npm run compile && vitest run",
+    "postinstall": "wxt prepare"
+  },
+  "devDependencies": {
+    "@types/node": "^22.20.5",
+    "fake-indexeddb": "^6.2.5",
+    "happy-dom": "^20.14.5",
+    "typescript": "^5.9.3",
+    "vite": "^8.1.5",
+    "vitest": "^5.0.3",
+    "web-ext": "^10.5.0",
+    "wxt": "^0.21.3"
+  }
+}

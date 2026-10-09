@@ -1,0 +1,29 @@
+# Dependencies
+node_modules/
+
+# WXT build output
+.output/
+.wxt/
+dist/
+*.zip
+
+# Environment and secrets
+.env*
+!.env.example
+
+# Apps Script CLI credentials
+.clasprc.json
+
+# OS / editor
+.DS_Store
+.vscode/
+.idea/
+
+# Logs
+*.log
+*.log.*
+logs/
+
+# Local MCP config (may hold API keys)
+.mcp.json
+

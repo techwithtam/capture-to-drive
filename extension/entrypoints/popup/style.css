@@ -1,0 +1,231 @@
+/*
+ * Toolbar popup layout. Components come from assets/components.css and colors only from the var(--c-*) tokens.
+ *
+ * Alignment: the row icons, the status circle, and the Settings icon share one 16px column, and the row labels, the
+ * status text, and the Settings label start at the same x. Sections run edge to edge so their dividers do.
+ */
+
+/* A fixed width. Without one the browser sizes the popup to its narrowest layout. */
+body {
+  width: 340px;
+  overflow-x: hidden;
+}
+
+/* Header ------------------------------------------------------------------------------------------------------- */
+
+.popup-header {
+  display: flex;
+  align-items: center;
+  /* The 18px mark sits centered on the 16px icon column, and the title starts where the row labels do. */
+  gap: calc(var(--sp-3) - 1px);
+  padding: var(--sp-3) var(--sp-4) var(--sp-2) calc(var(--sp-4) + var(--sp-1) - 1px);
+}
+
+/* A small indigo tile with the crop glyph (added by main.ts), as on the Settings page. */
+.app-mark {
+  display: grid;
+  flex: none;
+  place-items: center;
+  width: 18px;
+  height: 18px;
+  color: var(--c-on-primary);
+  background: var(--c-primary);
+  border-radius: var(--r-sm);
+}
+
+.app-mark .icon {
+  width: 12px;
+  height: 12px;
+  stroke-width: 2.25;
+}
+
+.popup-title {
+  margin: 0;
+  font-size: var(--fs-body);
+  font-weight: 500;
+  line-height: 1.5;
+  letter-spacing: -0.01em;
+  color: var(--c-text);
+}
+
+/* Settings gate ------------------------------------------------------------------------------------------------ */
+
+/* Inset to the app mark's left edge, so the text and button line up under it. */
+.setup {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-3);
+  padding: var(--sp-1) calc(var(--sp-4) + var(--sp-1) - 1px) var(--sp-4);
+}
+
+.setup-text {
+  margin: 0;
+  color: var(--c-text-secondary);
+}
+
+.setup-button {
+  width: 100%;
+}
+
+/* Until the settings check answers: keeps the menu's space (so the popup opens at its usual size) without showing it. */
+.menu.is-pending {
+  visibility: hidden;
+}
+
+/* Command rows ------------------------------------------------------------------------------------------------- */
+
+.commands {
+  display: flex;
+  flex-direction: column;
+  padding: 0 var(--sp-2) var(--sp-2);
+}
+
+/* One highlight at a time: pointer movement makes a row active, so hover on its own does not raise one. */
+.commands .row:hover:not([aria-disabled='true'], .is-active) {
+  color: var(--c-text-secondary);
+  background: transparent;
+}
+
+/* The label and, on Save this PDF, the hint under it. */
+.row-label {
+  display: flex;
+  flex-direction: column;
+}
+
+.row-hint {
+  color: var(--c-text-muted);
+}
+
+/* Holds the hint's line while the PDF check runs, so the rows below do not jump when the hint appears. */
+.row-hint.is-reserved {
+  visibility: hidden;
+}
+
+/* A two-line row keeps its icon on the first line. */
+.row.row-has-hint {
+  align-items: flex-start;
+  padding-top: var(--sp-2);
+  padding-bottom: var(--sp-2);
+}
+
+.row.row-has-hint .icon {
+  /* (line height 21px - icon 16px) / 2 */
+  margin-top: 2.5px;
+}
+
+/* The Select area shortcut, one .kbd per key, at the end of the row. */
+.row-keys {
+  display: inline-flex;
+  flex: none;
+  gap: var(--sp-1);
+}
+
+/* Upload queue ------------------------------------------------------------------------------------------------- */
+
+.queue {
+  padding: var(--sp-2);
+  border-top: 1px solid var(--c-border);
+}
+
+.status-line {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-2);
+  min-height: var(--tap);
+  padding-left: var(--sp-3);
+}
+
+.queue-status {
+  flex: 1;
+  min-width: 0;
+  margin: 0;
+  /* With the 1px nudge below, the 14px circle centers on the icon column and the text lines up with the row labels. */
+  gap: calc(var(--sp-3) + 1px);
+}
+
+.queue-status .status-dot {
+  margin-left: 1px;
+}
+
+.status-action {
+  flex: none;
+  padding: 0 var(--sp-3);
+}
+
+/* Retry now and View together (a waiting item keeps failing): tighter, so "N waiting to upload" stays on one line. */
+.status-line:has(.status-action:not([hidden]) + .status-action:not([hidden])) .status-action {
+  padding: 0 var(--sp-2);
+}
+
+/* The needs-attention items behind View: one surface step up, scrolling inside the popup when there are many. */
+.attention-list {
+  max-height: 216px;
+  margin: var(--sp-1) 0 0;
+  padding: 0;
+  overflow-y: auto;
+  list-style: none;
+  background: var(--c-surface);
+  border: 1px solid var(--c-border);
+  border-radius: var(--r-lg);
+}
+
+.attention-item {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-1);
+  min-width: 0;
+  padding: var(--sp-3);
+}
+
+.attention-item + .attention-item {
+  border-top: 1px solid var(--c-border-subtle);
+}
+
+.attention-filename {
+  overflow: hidden;
+  font-family: var(--font-mono);
+  font-size: var(--fs-meta);
+  line-height: 1.5;
+  color: var(--c-text);
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.attention-message {
+  margin: 0;
+  overflow-wrap: anywhere;
+}
+
+.attention-actions {
+  display: flex;
+  gap: var(--sp-2);
+  margin-top: var(--sp-1);
+}
+
+.attention-actions .btn {
+  padding: 0 var(--sp-3);
+}
+
+/* Footer ------------------------------------------------------------------------------------------------------- */
+
+.popup-footer {
+  padding: var(--sp-2);
+  border-top: 1px solid var(--c-border);
+}
+
+/* Same inset and gap as a row (less the button's 1px border), so the icon and label line up with the rows above. */
+.footer-button {
+  gap: var(--sp-3);
+  padding: 0 var(--sp-3) 0 calc(var(--sp-3) - 1px);
+}
+
+.footer-button .icon {
+  color: var(--c-text-muted);
+}
+
+/* High contrast preference: the needs-attention panel's quiet border becomes a clear edge. */
+@media (prefers-contrast: more) {
+  .attention-list {
+    border-color: var(--c-border-control);
+  }
+}

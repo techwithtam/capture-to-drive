@@ -1,0 +1,207 @@
+/*
+ * Note step UI (spec section 6.4), shared by the in-page note card and the note window. Load after tokens.css and
+ * components.css. Colors only from var(--c-*). Views are built by lib/note-view.ts.
+ *
+ * The in-page card lives in a shadow root on someone else's web page. The host resets every inherited page style,
+ * and the card sets its own font and color. As a surface that floats over a web page, it takes --shadow-float
+ * (which carries its own hairline ring) instead of a border.
+ */
+
+/* In-page card --------------------------------------------------------------------------------------------------- */
+
+/*
+ * !important: a page rule that matches the host (such as `html * { letter-spacing: 0.04em }`) beats a normal :host
+ * rule, and its inherited values would reach the card. An important :host declaration wins over any page rule.
+ */
+:host {
+  all: initial !important;
+  color-scheme: light dark !important;
+}
+
+.note-card {
+  position: fixed;
+  right: var(--sp-4);
+  bottom: var(--sp-4);
+  z-index: 2147483647;
+  box-sizing: border-box;
+  width: 360px;
+  max-width: calc(100vw - var(--sp-4) * 2);
+  max-height: calc(100vh - var(--sp-4) * 2);
+  overflow: auto;
+  padding: var(--sp-4);
+  font-family: var(--font-sans);
+  font-size: var(--fs-body);
+  font-weight: 400;
+  line-height: 1.5;
+  color: var(--c-text);
+  text-align: left;
+  background: var(--c-surface);
+  border-radius: var(--r-lg);
+  box-shadow: var(--shadow-float);
+  animation: note-card-in var(--dur-fast) ease-out;
+  transition: opacity var(--dur-fast) ease-out;
+}
+
+.note-card.is-leaving {
+  opacity: 0;
+}
+
+@keyframes note-card-in {
+  from {
+    opacity: 0;
+    transform: translateY(var(--sp-1));
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .note-card {
+    animation: none;
+    transition: none;
+  }
+}
+
+/* Note window ---------------------------------------------------------------------------------------------------- */
+
+.note-page {
+  padding: var(--sp-4);
+}
+
+.note-page .title {
+  margin-bottom: var(--sp-3);
+}
+
+/* Views (card body and window body) ------------------------------------------------------------------------------ */
+
+.note-view {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-4);
+}
+
+/* Extra line above the capture, such as the visible-area fallback notice. */
+.note-notice {
+  margin: 0;
+  color: var(--c-text-secondary);
+}
+
+.note-file {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--sp-3);
+}
+
+/* Thumbnail frame: one surface step and a quiet hairline, the image letterboxed inside. */
+.note-preview {
+  display: grid;
+  flex: none;
+  place-items: center;
+  width: 96px;
+  height: 72px;
+  overflow: hidden;
+  color: var(--c-text-muted);
+  background: var(--c-surface-raised);
+  border: 1px solid var(--c-border-subtle);
+  border-radius: var(--r-md);
+}
+
+.note-preview-icon {
+  width: 40px;
+  height: 40px;
+}
+
+.note-preview .icon {
+  width: 20px;
+  height: 20px;
+}
+
+.note-thumb {
+  display: block;
+  width: auto;
+  height: auto;
+  max-width: 100%;
+  max-height: 100%;
+}
+
+.note-filename {
+  flex: 1;
+  min-width: 0;
+  margin: 0;
+  font-family: var(--font-mono);
+  font-size: var(--fs-meta);
+  line-height: 1.5;
+  color: var(--c-text-secondary);
+  overflow-wrap: anywhere;
+}
+
+/* An icon tile is shorter than the text beside it, so center the filename on the tile when it fits on one line. */
+.note-preview-icon + .note-filename {
+  align-self: center;
+}
+
+.note-form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-4);
+}
+
+.note-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: var(--sp-2);
+}
+
+/* The circle carries the color; only needs-attention text is tinted, as on the Settings status line. */
+.note-status {
+  margin: 0;
+  color: var(--c-text);
+}
+
+.note-status.status-attention {
+  color: var(--c-error);
+}
+
+/* Empty until the first status: out of the layout (no gap), but still in the page so it stays a live region. */
+.note-status:empty {
+  position: absolute;
+}
+
+/* Message on its own: text and circle on the left, Close on the right. */
+.note-message-view {
+  flex-direction: row;
+  align-items: flex-start;
+  gap: var(--sp-3);
+}
+
+.note-message-view .note-status {
+  flex: 1;
+  min-width: 0;
+  /* Centers a one-line message on the 44px button. */
+  padding-top: calc((var(--tap) - 1.5em) / 2);
+}
+
+/* Forced colors ---------------------------------------------------------------------------------------------------- */
+
+/* Windows high contrast removes box shadows, which are the floating card's only edge: give it a real border. */
+@media (forced-colors: active) {
+  .note-card {
+    border: 1px solid CanvasText;
+  }
+}
+
+/* High contrast preference: the card's shadow ring is only 8% opaque, so give it a real edge. */
+@media (prefers-contrast: more) {
+  .note-card {
+    border: 1px solid var(--c-border-control);
+  }
+}
+
+/*
+ * Whole page prints the tab to PDF with print media. The card (including an error message, which stays until closed)
+ * is fixed-position and would repeat on every printed page, so it never prints. This stays last, so it wins over the
+ * important :host reset above.
+ */
+@media print {
+  :host {
+    display: none !important;
+  }
+}

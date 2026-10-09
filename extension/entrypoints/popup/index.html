@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Capture to Drive</title>
+    <meta name="manifest.type" content="browser_action" />
+  </head>
+  <body>
+    <main class="popup">
+      <header class="popup-header">
+        <span class="app-mark" id="app-mark" aria-hidden="true"></span>
+        <h1 class="popup-title">Capture to Drive</h1>
+      </header>
+
+      <!-- Shown instead of the menu while settings are incomplete. -->
+      <section class="setup" id="setup" aria-label="Setup" hidden>
+        <p class="setup-text" id="setup-text"></p>
+        <button type="button" class="btn btn-primary setup-button" id="finish-setup"></button>
+      </section>
+
+      <!-- Invisible (but taking its space) until main.ts knows the settings are complete. -->
+      <div class="menu is-pending" id="menu">
+        <!-- Rows (<button role="menuitem">) are added by main.ts from lib/popup-model.ts. The label is set there too. -->
+        <div class="commands" id="commands" role="menu"></div>
+
+        <!-- Spoken only: what changed in the menu that the screen does not announce by itself. -->
+        <p class="visually-hidden" id="announcer" role="status" aria-live="polite" aria-atomic="true"></p>
+
+        <section class="queue" aria-label="Uploads">
+          <div class="status-line">
+            <p class="status queue-status" id="queue-status" aria-live="polite" aria-atomic="true"></p>
+            <button type="button" class="btn btn-ghost status-action" id="status-retry" hidden></button>
+            <button type="button" class="btn btn-ghost status-action" id="status-view" hidden></button>
+          </div>
+          <!-- Items are added by main.ts from lib/popup-model.ts. The label is set there too. -->
+          <ul class="attention-list" id="attention-list" hidden></ul>
+        </section>
+
+        <footer class="popup-footer">
+          <button type="button" class="btn btn-ghost footer-button" id="open-settings">Settings</button>
+        </footer>
+      </div>
+    </main>
+    <script type="module" src="./main.ts"></script>
+  </body>
+</html>

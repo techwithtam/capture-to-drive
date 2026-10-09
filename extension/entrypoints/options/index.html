@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Capture to Drive Settings</title>
+    <meta name="manifest.open_in_tab" content="true" />
+  </head>
+  <body>
+    <main class="page">
+      <header class="app-header">
+        <span class="app-mark" id="app-mark" aria-hidden="true"></span>
+        <h1 class="heading">Capture to Drive <span class="app-subtitle">Settings</span></h1>
+      </header>
+      <p class="intro">Paste these once. They are stored only in this browser.</p>
+
+      <form id="settings-form" novalidate>
+        <div class="card settings-fields">
+          <div class="field">
+            <label class="field-label" for="mailbox-url">Mailbox URL</label>
+            <input
+              class="input"
+              id="mailbox-url"
+              name="mailboxUrl"
+              type="url"
+              autocomplete="off"
+              autocapitalize="off"
+              spellcheck="false"
+              aria-describedby="mailbox-url-hint mailbox-url-error"
+            />
+            <p class="hint" id="mailbox-url-hint">The web address that ends in /exec.</p>
+            <p class="field-error" id="mailbox-url-error" hidden></p>
+          </div>
+
+          <div class="field">
+            <label class="field-label" for="secret-key">Secret key</label>
+            <input
+              class="input"
+              id="secret-key"
+              name="key"
+              type="password"
+              autocomplete="off"
+              autocapitalize="off"
+              spellcheck="false"
+              aria-describedby="secret-key-hint secret-key-error"
+            />
+            <p class="hint" id="secret-key-hint">The key that goes with the mailbox.</p>
+            <p class="field-error" id="secret-key-error" hidden></p>
+          </div>
+
+          <div class="field">
+            <label class="field-label" for="your-name">Your name</label>
+            <input
+              class="input"
+              id="your-name"
+              name="name"
+              type="text"
+              autocomplete="off"
+              spellcheck="false"
+              aria-describedby="your-name-hint your-name-error"
+            />
+            <p class="hint" id="your-name-hint">Used in file names. Up to 30 characters.</p>
+            <p class="field-error" id="your-name-error" hidden></p>
+          </div>
+        </div>
+
+        <div class="actions">
+          <button type="submit" class="btn btn-primary">Save</button>
+          <button type="button" class="btn btn-secondary" id="test-connection">Test connection</button>
+        </div>
+        <p class="status settings-status" id="status" aria-live="polite"></p>
+      </form>
+
+      <section class="shortcut" aria-labelledby="shortcut-heading">
+        <h2 class="title" id="shortcut-heading">Keyboard shortcut</h2>
+        <p class="hint">Choose the keys that start Select area. Your browser keeps the shortcut.</p>
+        <button type="button" class="btn btn-ghost btn-flush" id="change-shortcut">
+          Change keyboard shortcut
+          <span class="shortcut-keys" id="current-shortcut" hidden></span>
+        </button>
+      </section>
+    </main>
+    <script type="module" src="./main.ts"></script>
+  </body>
+</html>

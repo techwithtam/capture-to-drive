@@ -1,0 +1,155 @@
+/*
+ * Design tokens for Capture to Drive. This is the only file that defines colors.
+ * Every other stylesheet and inline style references var(--c-*).
+ *
+ * Light values live in the first token block, dark values in the prefers-color-scheme media query below it. Both blocks
+ * use the selector ":root, :host", so the tokens work in a page (:root) and inside a shadow root (:host), where
+ * ":root" matches nothing. Text on a primary-colored surface uses var(--c-on-primary). Depth comes from borders and
+ * small surface steps, never heavy shadows; only UI that floats over arbitrary web pages (the note card, the selection
+ * hint) uses var(--shadow-float).
+ *
+ * The file has two parts: the token blocks (safe to use anywhere) and, after them, base rules that target documents.
+ *
+ * Contrast (WCAG AA): text tokens reach 4.5:1 on --c-bg and --c-surface, status and icon colors 3:1. The test
+ * tests/tokens.test.ts enforces this, so change a value there and here together.
+ */
+
+:root,
+:host {
+  color-scheme: light dark;
+
+  /* Surfaces */
+  --c-bg: #fcfcfd;
+  --c-surface: #ffffff;
+  --c-surface-raised: #f4f5f8;
+  --c-surface-hover: rgba(0, 0, 0, 0.04);
+  --c-input-bg: #f7f8f9;
+
+  /* Borders */
+  --c-border: rgba(0, 0, 0, 0.09);
+  --c-border-subtle: rgba(0, 0, 0, 0.05);
+  --c-border-strong: rgba(0, 0, 0, 0.16);
+  --c-border-control: rgba(0, 0, 0, 0.45); /* resting border of inputs only: 3:1 against the card and the input fill */
+
+  /* Text */
+  --c-text: #1b1c1f;
+  --c-text-secondary: #3c4149;
+  --c-text-muted: #6b6f76;
+  --c-text-faint: #6d727c;
+
+  /* Accent */
+  --c-primary: #5e6ad2;
+  --c-primary-hover: #4f5bc4;
+  --c-on-primary: #ffffff;
+  --c-link: #5a66d1;
+
+  /* Feedback text */
+  --c-success: #26805a;
+  --c-error: #c53a3a;
+  --c-warning: #946c00;
+
+  /* Capture status circles (the signature) */
+  --c-status-waiting: #898e97;
+  --c-status-uploading: #b38700;
+  --c-status-saved: #5e6ad2;
+  --c-status-attention: #d64545;
+
+  --shadow-float: 0 8px 24px rgba(0, 0, 0, 0.12), 0 0 0 1px rgba(0, 0, 0, 0.08);
+
+  /* Same in both color schemes */
+  --font-sans: -apple-system, BlinkMacSystemFont, Inter, 'Segoe UI', sans-serif;
+  --font-mono: ui-monospace, 'SF Mono', Menlo, monospace;
+
+  --fs-meta: 12px; /* kbd, filenames in mono, minor metadata only */
+  --fs-body: 14px;
+  --fs-title: 16px;
+  --fs-heading: 20px;
+
+  --r-sm: 4px; /* kbd, tags */
+  --r-md: 6px; /* buttons, inputs, rows */
+  --r-lg: 10px; /* popup panel, cards, note card */
+
+  --sp-1: 4px;
+  --sp-2: 8px;
+  --sp-3: 12px;
+  --sp-4: 16px;
+  --sp-6: 24px;
+
+  --tap: 44px; /* minimum height of anything clickable */
+  --dur-fast: 120ms; /* used with ease-out */
+}
+
+@media (prefers-color-scheme: dark) {
+  :root,
+  :host {
+    --c-bg: #101113;
+    --c-surface: #16171a;
+    --c-surface-raised: #1c1d21;
+    --c-surface-hover: rgba(255, 255, 255, 0.05);
+    --c-input-bg: #0c0d0e;
+
+    --c-border: rgba(255, 255, 255, 0.08);
+    --c-border-subtle: rgba(255, 255, 255, 0.05);
+    --c-border-strong: rgba(255, 255, 255, 0.14);
+    --c-border-control: rgba(255, 255, 255, 0.38);
+
+    --c-text: #f7f8f8;
+    --c-text-secondary: #d0d6e0;
+    --c-text-muted: #8a8f98;
+    --c-text-faint: #7b8088;
+
+    --c-primary: #5e6ad2;
+    --c-primary-hover: #505dce;
+    --c-on-primary: #ffffff;
+    --c-link: #7681da;
+
+    --c-success: #4cb782;
+    --c-error: #eb5757;
+    --c-warning: #f2c94c;
+
+    --c-status-waiting: #8a8f98;
+    --c-status-uploading: #f2c94c;
+    --c-status-saved: #5e6ad2;
+    --c-status-attention: #eb5757;
+
+    --shadow-float: 0 8px 24px rgba(0, 0, 0, 0.4), 0 0 0 1px rgba(255, 255, 255, 0.08);
+  }
+}
+
+/*
+ * Base rules. These target documents (extension pages), not shadow roots: "body" matches nothing inside a shadow tree,
+ * so a shadow-root consumer sets font, color, and line-height on its own root element. The remaining rules do work
+ * inside a shadow root if the whole file is included there.
+ */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: var(--font-sans);
+  font-size: var(--fs-body);
+  font-weight: 400;
+  line-height: 1.5;
+  color: var(--c-text);
+  background: var(--c-bg);
+}
+
+:focus-visible {
+  outline: 2px solid var(--c-primary);
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

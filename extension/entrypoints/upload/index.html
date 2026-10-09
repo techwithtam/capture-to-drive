@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Upload files</title>
+  </head>
+  <body>
+    <main class="page">
+      <header class="app-header">
+        <span class="app-mark" id="app-mark" aria-hidden="true"></span>
+        <h1 class="heading">Capture to Drive <span class="app-subtitle">Upload files</span></h1>
+      </header>
+
+      <p class="hint" id="loading" role="status">Loading settings…</p>
+      <section class="card settings-required" id="settings-required" hidden aria-label="Settings required">
+        <p>Set up your mailbox in Settings to upload files.</p>
+        <button type="button" class="btn btn-primary" id="open-settings">Open Settings</button>
+      </section>
+
+      <section id="upload-controls" hidden aria-label="Upload files">
+        <div class="field note-field">
+          <label class="field-label" for="note">Note (optional)</label>
+          <textarea class="input" id="note" rows="3" aria-describedby="note-hint"></textarea>
+          <p class="hint" id="note-hint">Applies to every file you choose or drop next.</p>
+        </div>
+
+        <div class="card drop-zone" id="drop-zone">
+          <span id="upload-icon" aria-hidden="true"></span>
+          <p class="title">Drop files here</p>
+          <label class="btn btn-primary file-picker" for="file-input">
+            Choose files
+            <input id="file-input" type="file" multiple />
+          </label>
+        </div>
+      </section>
+
+      <p class="field-error page-message" id="page-message" aria-live="polite"></p>
+      <section id="file-results" hidden aria-labelledby="files-heading">
+        <h2 class="title" id="files-heading">Files</h2>
+        <ul class="card file-list" id="file-list" aria-live="polite" aria-relevant="additions text removals"></ul>
+      </section>
+    </main>
+    <script type="module" src="./main.ts"></script>
+  </body>
+</html>

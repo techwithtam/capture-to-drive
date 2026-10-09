@@ -1,0 +1,87 @@
+:host {
+  all: initial !important;
+  display: block !important;
+  position: fixed !important;
+  inset: 0 !important;
+  width: 100vw !important;
+  height: 100vh !important;
+  z-index: 2147483647 !important;
+}
+
+.selection-overlay {
+  position: absolute;
+  inset: 0;
+  cursor: crosshair;
+  touch-action: none;
+  user-select: none;
+  font: var(--fs-body) / 1.5 var(--font-sans);
+  color: var(--c-text);
+}
+
+.selection-dim {
+  position: absolute;
+  background: var(--c-text);
+  opacity: 0.35;
+  pointer-events: none;
+}
+
+@media (prefers-color-scheme: dark) {
+  .selection-dim {
+    background: var(--c-bg);
+    opacity: 0.65;
+  }
+}
+
+.selection-border {
+  position: absolute;
+  border: 1px solid var(--c-primary);
+  pointer-events: none;
+}
+
+.selection-hint {
+  position: absolute;
+  top: var(--sp-4);
+  left: 50%;
+  transform: translateX(-50%);
+  max-width: calc(100% - 2 * var(--sp-4));
+  padding: var(--sp-2) var(--sp-3);
+  background: var(--c-surface);
+  color: var(--c-text);
+  border-radius: var(--r-md);
+  box-shadow: var(--shadow-float);
+  text-align: center;
+  pointer-events: none;
+}
+
+/*
+ * Forced colors (Windows high contrast) removes the hint's shadow, its only edge, and turns the dim panels into plain
+ * Canvas washes. The hint gets a border and the selection a thicker one, in system colors.
+ */
+@media (forced-colors: active) {
+  .selection-hint {
+    border: 1px solid CanvasText;
+  }
+
+  .selection-border {
+    border-width: 2px;
+  }
+}
+
+/* High contrast preference: the hint's shadow ring is only 8% opaque, so give it a real edge. */
+@media (prefers-contrast: more) {
+  .selection-hint {
+    border: 1px solid var(--c-border-control);
+  }
+}
+
+/* Drag geometry updates immediately. There are no overlay animations in either motion preference. */
+
+/*
+ * Whole page prints the tab to PDF with print media. The overlay is never part of the page, so it never prints. This
+ * stays last, so it wins over the important :host reset above.
+ */
+@media print {
+  :host {
+    display: none !important;
+  }
+}

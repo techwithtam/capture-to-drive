@@ -1,0 +1,142 @@
+/* Upload page layout; shared controls and status circles come from components.css. */
+.page {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: calc(var(--sp-6) * 2) var(--sp-4);
+}
+
+.app-header {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-3);
+  margin-bottom: var(--sp-6);
+}
+
+.app-mark {
+  display: grid;
+  flex: none;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  color: var(--c-on-primary);
+  background: var(--c-primary);
+  border-radius: var(--r-md);
+}
+
+.app-subtitle {
+  display: block;
+  font-size: var(--fs-body);
+  font-weight: 400;
+  letter-spacing: 0;
+  color: var(--c-text-muted);
+}
+
+.note-field {
+  margin-bottom: var(--sp-4);
+}
+
+.note-field .input {
+  padding-top: var(--sp-2);
+  padding-bottom: var(--sp-2);
+  resize: vertical;
+}
+
+.drop-zone {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--sp-4);
+  min-height: calc(var(--tap) * 5);
+  border: 1px dashed var(--c-border-control);
+  transition:
+    background-color var(--dur-fast) ease-out,
+    border-color var(--dur-fast) ease-out;
+}
+
+.drop-zone.drag-over {
+  background: var(--c-surface-raised);
+  border-color: var(--c-primary);
+}
+
+#upload-icon {
+  display: flex;
+  color: var(--c-text-muted);
+}
+
+.file-picker {
+  position: relative;
+}
+
+/* The native, labelled file control covers the visible button and stays reachable by keyboard. */
+.file-picker input {
+  position: absolute;
+  inset: -1px;
+  width: calc(100% + 2px);
+  height: calc(100% + 2px);
+  opacity: 0;
+  cursor: pointer;
+}
+
+.file-picker:has(input:focus-visible) {
+  outline: 2px solid var(--c-primary);
+  outline-offset: 2px;
+}
+
+.page-message {
+  margin: var(--sp-3) 0;
+}
+
+.page-message:empty {
+  margin: 0;
+}
+
+/* The page message is red because it is almost always a problem. "Every file is queued" is good news. */
+.page-message.page-message-ok {
+  color: var(--c-success);
+}
+
+#file-results {
+  margin-top: var(--sp-6);
+}
+
+.file-list {
+  margin: var(--sp-3) 0 0;
+  padding: 0 var(--sp-4);
+  list-style: none;
+}
+
+.file-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: start;
+  gap: var(--sp-1) var(--sp-4);
+  padding: var(--sp-4) 0;
+}
+
+.file-row + .file-row {
+  border-top: 1px solid var(--c-border-subtle);
+}
+
+.file-name {
+  font-family: var(--font-mono);
+  overflow-wrap: anywhere;
+}
+
+.file-size {
+  color: var(--c-text-muted);
+  white-space: nowrap;
+}
+
+.file-status {
+  grid-column: 1 / -1;
+  overflow-wrap: anywhere;
+}
+
+.file-status.status-attention {
+  color: var(--c-error);
+}
+
+.settings-required p {
+  margin: 0 0 var(--sp-3);
+}
